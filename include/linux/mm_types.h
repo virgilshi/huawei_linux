@@ -210,6 +210,9 @@ struct page {
 #ifdef LAST_CPUPID_NOT_IN_PAGE_FLAGS
 	int _last_cpupid;
 #endif
+
+__u32 hot_delay_cnt; //// added by sl
+__u16 is_hot_app; //// added by sl
 }
 /*
  * The struct page can be forced to be double word aligned so that atomic ops

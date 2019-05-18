@@ -111,6 +111,16 @@
  *   ->tasklist_lock            (memory_failure, collect_procs_ao)
  */
 
+//// added by sl
+static set_hot_app_page(struct page *page){
+	char hot_app_name[] = "qq"; // hot app name, e.g., qq.
+								// TODO: create a hot app list 
+	
+	if(strstr(current->comm, hot_app_name))
+		page->is_hot_app = 1;
+	return 0;
+)
+
 static int page_cache_tree_insert(struct address_space *mapping,
 				  struct page *page, void **shadowp)
 {
@@ -842,10 +852,12 @@ struct page *__page_cache_alloc(gfp_t gfp)
 			n = cpuset_mem_spread_node();
 			page = __alloc_pages_node(n, gfp, 0);
 		} while (!page && read_mems_allowed_retry(cpuset_mems_cookie));
-
+		assert(!set_hot_app_page(page));
 		return page;
 	}
-	return alloc_pages(gfp, 0);
+	page = alloc_pages(gfp, 0);
+	assert(!set_hot_app_page(page));
+	return page;
 }
 EXPORT_SYMBOL(__page_cache_alloc);
 #endif

@@ -180,6 +180,7 @@ struct backing_dev_info {
 	struct dentry *debug_dir;
 	struct dentry *debug_stats;
 #endif
+unsigned int dev_is_busy; ///// added by sl
 };
 
 enum {

@@ -1909,7 +1909,7 @@ void balance_dirty_pages_ratelimited(struct address_space *mapping)
 	}
 	preempt_enable();
 
-	if (unlikely(current->nr_dirtied >= ratelimit))
+	if (!bdi->dev_is_busy && unlikely(current->nr_dirtied >= ratelimit)) //// added by sl, dev isn't busy
 		balance_dirty_pages(mapping, wb, current->nr_dirtied);
 
 	wb_put(wb);
@@ -2241,7 +2241,22 @@ continue_unlock:
 				/* someone wrote it for us */
 				goto continue_unlock;
 			}
-
+			
+			///// added by sl
+			///// if hot page, then skip 5 times(i.e., skip thred = 5)
+			if(page){
+				if(page->is_hot_page){
+					page->hot_delay_cnt++;
+					if(page->hot_delay_cnt > 5)
+						continue;
+					else
+					{
+						page->hot_delay_cnt = 0;
+						page->is_hot_app = 0;
+					}
+					
+				}
+			}
 			if (PageWriteback(page)) {
 				if (wbc->sync_mode != WB_SYNC_NONE)
 					wait_on_page_writeback(page);
