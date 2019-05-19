@@ -116,14 +116,16 @@
 static int set_hot_app_page(struct page *page){
 	char hot_app_name[] = "qq"; // hot app name, e.g., qq.
 								// TODO: create a hot app list 
-	
+	page->is_hot_app = 0;
+	page->hot_delay_cnt = 0;
 	printk(KERN_EMERG "current process(%s, %d), page = (%lu)", 
 		current->comm, ////process name
 		current->pid,
 		page->flags
 		);
-	// if(strstr(current->comm, hot_app_name))
-		// page->is_hot_app = 1;
+	if(strstr(current->comm, hot_app_name))
+		page->is_hot_app = 1;
+	
 	return 0;
 }
 
@@ -860,6 +862,7 @@ struct page *__page_cache_alloc(gfp_t gfp)
 		} while (!page && read_mems_allowed_retry(cpuset_mems_cookie));
 		printk(KERN_EMERG "process(%s) pid(%d)\n", current->comm, current->pid);
 		// assert(!set_hot_app_page(page));
+		
 		set_hot_app_page(page);
 		return page;
 	}

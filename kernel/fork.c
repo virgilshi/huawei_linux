@@ -2058,7 +2058,7 @@ long _do_fork(unsigned long clone_flags,
 	p = copy_process(clone_flags, stack_start, stack_size,
 			 child_tidptr, NULL, trace, tls, NUMA_NO_NODE);
 	add_latent_entropy();
-	printk(KERN_EMERG "the process pid = %d\n", p->pid);
+	// printk(KERN_EMERG "the process pid = %d\n", p->pid);
 	/*
 	 * Do this prior waking up the new thread - the thread pointer
 	 * might get invalid after that point, if the thread exits quickly.
