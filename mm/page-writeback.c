@@ -2244,19 +2244,19 @@ continue_unlock:
 			
 			///// added by sl
 			///// if hot page, then skip 5 times(i.e., skip thred = 5)
-			if(page){
-				if(page->is_hot_page){
-					page->hot_delay_cnt++;
-					if(page->hot_delay_cnt > 5)
-						continue;
-					else
-					{
-						page->hot_delay_cnt = 0;
-						page->is_hot_app = 0;
-					}
+			// if(page){
+			// 	if(page->is_hot_page){
+			// 		page->hot_delay_cnt++;
+			// 		if(page->hot_delay_cnt > 5)
+			// 			continue;
+			// 		else
+			// 		{
+			// 			page->hot_delay_cnt = 0;
+			// 			page->is_hot_app = 0;
+			// 		}
 					
-				}
-			}
+			// 	}
+			// }
 			if (PageWriteback(page)) {
 				if (wbc->sync_mode != WB_SYNC_NONE)
 					wait_on_page_writeback(page);
